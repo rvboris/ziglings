@@ -10,20 +10,20 @@
 const print = @import("std").debug.print;
 
 pub fn main() void {
-    const n = 5;
-    var foo_frame = async foo(n);
+    var n: u32 = 5;
+    var foo_frame = async foo(&n);
 
-    ???
+    while(n > 0) {
+        resume foo_frame;
+    }
 
     print("\n", .{});
 }
 
-fn foo(countdown: u32) void {
-    var current = countdown;
-
-    while (current > 0) {
-        print("{} ", .{current});
-        current -= 1;
+fn foo(countdown: *u32) void {
+    while (countdown.* > 0) {
+        print("{} ", .{countdown.*});
+        countdown.* -= 1;
         suspend {}
     }
 }
